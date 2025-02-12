@@ -22,9 +22,16 @@ namespace TestProject.Page
             ClicaBotaoName("button");
         }   
 
+        public void EsperaCarregar()
+        {
+            Espere(5000);
+        }
+
         public void ValidaLogin()
         {
-            ValidaDados("/html/body/app-root/app-default-layout/div[2]/mat-sidenav-container/mat-sidenav-content/main/div/app-videos-list/div/div[2]/div/h1", "BEM-VINDO(A)!");
+            EstaLogado();
         }
+
+
     }
 }

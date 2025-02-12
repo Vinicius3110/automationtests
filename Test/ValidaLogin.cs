@@ -10,10 +10,11 @@ namespace TestProject.Test
     class ValidaLoginTest : ValidaLoginPage
     {
         [Test]
-        public void ValidaLogin()
+        public void ExecutaAutomacao()
         {
             FazLogin();
             ClicaBotaoLogin();
+            EsperaCarregar();
             ValidaLogin();
         }
     }
