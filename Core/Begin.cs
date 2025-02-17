@@ -1,13 +1,21 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
-using System;
-using System.Security.Cryptography.X509Certificates;
 
 namespace TestProject.Core
 {
-    public class Begin : DSL
+    public class Begin
     {
+
+        protected GlobalVariables globalVariables { get; private set; }
+        protected DSL dsl { get; private set; }
+
+        public Begin()
+    {
+        globalVariables = new GlobalVariables();
+        dsl = new DSL();
+    }
+
         #region Definitions
         private void AbreNavegador()
         {
@@ -20,16 +28,16 @@ namespace TestProject.Core
             devMode.AddArgument("disk-cache-size=0");
             devMode.AddArgument("start-maximized");
 
-            if (headlessTest) 
+            if (globalVariables.headlessTest) 
             {
-                driver = new ChromeDriver(headlessMode);
+                globalVariables.Driver = new ChromeDriver(headlessMode);
             }
             else
             {
-                driver = new ChromeDriver(devMode);
-                driverQuit = false;
+                globalVariables.Driver = new ChromeDriver(devMode);
+                globalVariables.driverQuit = false;
             }
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            globalVariables.Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
         }
         #endregion
 
@@ -38,9 +46,9 @@ namespace TestProject.Core
         public void Setup()
         {
             AbreNavegador();
-            driver.Navigate().GoToUrl("https://saph-dev.rs.true.com.br//login");
-            IWebElement webElement = driver.FindElement(By.XPath("/html/body/app-root/app-login/div/div/div/div/div/div/button"));
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            globalVariables.Driver.Navigate().GoToUrl("https://saph-dev.rs.true.com.br//login");
+            IWebElement webElement = globalVariables.Driver.FindElement(By.XPath("/html/body/app-root/app-login/div/div/div/div/div/div/button"));
+            globalVariables.Wait.Until(driver => webElement.Displayed && webElement.Enabled);
             webElement.Click();
         }
         #endregion
@@ -49,7 +57,7 @@ namespace TestProject.Core
         [TearDown]
         public void ResultadoFimDoTeste()
         {
-            if (driverQuit) driver.Quit();
+            if (globalVariables.driverQuit) globalVariables.Driver.Quit();
 
         }
         #endregion
