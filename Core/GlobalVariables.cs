@@ -10,11 +10,12 @@ namespace TestProject.Core
 {
     public class GlobalVariables
     {
-        public IWebDriver? driver;
+        public IWebDriver? Driver { get; set; }
+
+        public WebDriverWait? Wait { get; set; }
 
         public bool driverQuit = false;
 
         public bool headlessTest = false;
-
     }
 }

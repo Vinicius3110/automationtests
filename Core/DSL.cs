@@ -3,55 +3,61 @@ using OpenQA.Selenium.Support.UI;
 
 namespace TestProject.Core
 {
-    public class DSL : GlobalVariables
+    public class DSL
     {
-        #region Função de manipulação
+        private readonly GlobalVariables _globalVariables; // Use readonly para garantir que a referência não mude
 
-        public static void Espere(int time) => Thread.Sleep(time);
+        public DSL(GlobalVariables globalVariables)
+        {
+            _globalVariables = globalVariables ?? throw new ArgumentNullException(nameof(globalVariables)); // Lança exceção se globalVariables for null
+        }
 
-        #endregion
+        public DSL()
+        {
+        }
+
+        public void Espere(int time) => Thread.Sleep(time);
 
         public void EscreveTextoId(string id, string value)
         {
-            driver.FindElement(By.Id(id)).SendKeys(value);
+            _globalVariables.Driver.FindElement(By.Id(id)).SendKeys(value);
         }
 
         public void EscreveTextoName(string name, string value)
         {
-            driver.FindElement(By.Name(name)).SendKeys(value);
+            _globalVariables.Driver.FindElement(By.Name(name)).SendKeys(value);
         }
 
         public void EscreveTextoXpath(string xpath, string value)
         {
-            driver.FindElement(By.XPath(xpath)).SendKeys(value);
+            _globalVariables.Driver.FindElement(By.XPath(xpath)).SendKeys(value);
         }
 
         public void ClicaBotaoId(string id)
         {
-            driver.FindElement(By.Id(id)).Click();
+            _globalVariables.Driver.FindElement(By.Id(id)).Click();
         }
 
         public void ClicaBotaoName(string name)
         {
-            driver.FindElement(By.Name(name)).Click();
+            _globalVariables.Driver.FindElement(By.Name(name)).Click();
         }
 
         public void ClicaBotaoXpath(string xpath)
         {
-            driver.FindElement(By.XPath(xpath)).Click();
+            _globalVariables.Driver.FindElement(By.XPath(xpath)).Click();
         }
 
         public void ValidaDados(string? xpath, string value)
         {
-            Assert.That(driver.FindElement(By.XPath(xpath)).Text, Does.Contain(value));
+            Assert.That(_globalVariables.Driver.FindElement(By.XPath(xpath)).Text, Does.Contain(value));
         }
 
         public void ValidaDadosId(string? id, string value)
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            var elemento = wait.Until(driver =>
+            var elemento = _globalVariables.Wait.Until(driver =>
             {
-                var el = driver.FindElement(By.Id(id));
+                var el = _globalVariables.Driver.FindElement(By.Id(id));
                 return (el.Displayed && el.Enabled) ? el : null;
             });
 
@@ -60,10 +66,8 @@ namespace TestProject.Core
 
         public void EstaLogado()
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            wait.Until(driver => driver.Url.Contains("/videos"));
-
-            Assert.That(driver.Url, Does.Contain("https://saph-dev.rs.true.com.br/videos"));
+            _globalVariables.Wait.Until(driver => driver.Url.Contains("/videos"));
+            Assert.That(_globalVariables.Driver.Url, Does.Contain("https://saph-dev.rs.true.com.br/videos"));
         }
 
         public void IrParaPagina(string urlRelativa)
