@@ -66,5 +66,16 @@ namespace TestProject.Core
             Assert.That(driver.Url, Does.Contain("https://saph-dev.rs.true.com.br/videos"));
         }
 
+        public void IrParaPagina(string urlRelativa)
+        {
+            string urlBase = driver.Url;   
+            
+            string novaUrl = new Uri(new Uri(urlBase), urlRelativa).ToString();
+
+            driver.Navigate().GoToUrl(novaUrl);
+
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            wait.Until(drv => drv.Url.Contains(urlRelativa));
+        }
     }
 }

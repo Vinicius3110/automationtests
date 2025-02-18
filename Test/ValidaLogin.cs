@@ -16,6 +16,7 @@ namespace TestProject.Test
             ClicaBotaoLogin();
             EsperaCarregar();
             ValidaLogin();
+            NavegaParaPagina();
         }
     }
 }
