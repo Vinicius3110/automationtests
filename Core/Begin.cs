@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
+using Microsoft.Extensions.Logging;
 
 namespace TestProject.Core
 {
@@ -46,7 +47,7 @@ namespace TestProject.Core
         public void Setup()
         {
             AbreNavegador();
-            globalVariables.Driver.Navigate().GoToUrl("https://saph-dev.rs.true.com.br//login");
+            globalVariables.Driver.Navigate().GoToUrl($"{Constants.BaseUrl}");
             IWebElement webElement = globalVariables.Driver.FindElement(By.XPath("/html/body/app-root/app-login/div/div/div/div/div/div/button"));
             globalVariables.Wait.Until(driver => webElement.Displayed && webElement.Enabled);
             webElement.Click();

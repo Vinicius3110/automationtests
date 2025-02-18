@@ -16,10 +16,27 @@ namespace TestProject.Core
         {
         }
 
-        public void Espere(int time) => Thread.Sleep(time);
+        public void EspereElemento(By by, int timeoutInSeconds = 10)
+        {
+            var wait = new WebDriverWait(_globalVariables.Driver, TimeSpan.FromSeconds(timeoutInSeconds));
+            wait.Until(driver => driver.FindElement(by).Displayed);
+        }
 
         public void EscreveTextoId(string id, string value)
         {
+
+            try
+            {
+                var element = _globalVariables.Wait.Until(driver =>
+                driver.FindElement(By.Id(id)));
+                element.Clear();
+                element.SendKeys(value);
+            }
+            catch (Exception ex)
+            {
+                throw new Excepetion($"Não foi possivel escrever no elemento {id}"
+                : {ex.Message});
+            }
             _globalVariables.Driver.FindElement(By.Id(id)).SendKeys(value);
         }
 
@@ -55,6 +72,7 @@ namespace TestProject.Core
 
         public void ValidaDadosId(string? id, string value)
         {
+            var wait = new WebDriverWait(_globalVariables.Driver, TimeSpan.FromSeconds(Constants.DefaultTimeout));
             var elemento = _globalVariables.Wait.Until(driver =>
             {
                 var el = _globalVariables.Driver.FindElement(By.Id(id));

@@ -24,7 +24,7 @@ namespace TestProject.Page
 
         public void EsperaCarregar()
         {
-            Espere(5000);
+            Espere(Constants.DefaultWaitTime);
         }
 
         public void ValidaLogin()
