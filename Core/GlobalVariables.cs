@@ -17,7 +17,5 @@ namespace TestProject.Core
         public bool driverQuit = false;
 
         public bool headlessTest = false;
-
-        
     }
 }

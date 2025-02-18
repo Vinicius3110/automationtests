@@ -32,6 +32,9 @@ namespace TestProject.Page
             EstaLogado();
         }
 
-
+        public void NavegaParaPagina()
+        {
+            IrParaPagina("/contratantes");
+        }
     }
 }
